@@ -3,6 +3,9 @@
 ## The NLP model will automatically saves training variable on each epoch.
 ## Download the dataset manually for this program.
 
+## 3 Models to choose:
+    -. Standard embedding, Bidirectional LSTM, or Conv1D.
+
 ## Data provided by:
 ## Sarcasm Detection using Hybrid Neural Network
 ## Rishabh Misra, Prahal Arora
@@ -54,6 +57,7 @@ def main():
             tokenize_data(dataset);
 
     ## Build & compile the NLP Layer.
+    '''
     model   =   tf.keras.Sequential([
                             tf.keras.layers.Embedding(
                                     input_dim   = VOCAB_SIZE, 
@@ -64,6 +68,43 @@ def main():
                             #tf.keras.layers.Flatten(),
                             tf.keras.layers.GlobalAveragePooling1D (),
                             tf.keras.layers.Dense(64, activation = 'relu'),
+                            tf.keras.layers.Dense(1, activation = 'sigmoid'),
+
+    ]);
+
+    
+    ## Model with LSTM:
+    model   =   tf.keras.Sequential([
+                            tf.keras.layers.Embedding(
+                                    input_dim   = VOCAB_SIZE, 
+                                    output_dim  = 64,
+                                    input_length  = MAX_LEN,  
+                            ),
+
+                            #tf.keras.layers.Flatten(),
+                            #tf.keras.layers.GlobalAveragePooling1D (),
+                            tf.keras.layers.Bidirectional( tf.keras.layers.LSTM(64)),
+                            
+                            tf.keras.layers.Dense(64, activation = 'relu'),
+                            tf.keras.layers.Dense(1, activation = 'sigmoid'),
+
+    ]);
+    '''
+    ## Model with Conv1D:
+
+    model   =   tf.keras.Sequential([
+                            tf.keras.layers.Embedding(
+                                    input_dim   = VOCAB_SIZE, 
+                                    output_dim  = 64,
+                                    input_length  = MAX_LEN,  
+                            ),
+
+                            #tf.keras.layers.Flatten(),
+                            tf.keras.layers.Conv1D(128, 5, activation = 'relu'),
+                            tf.keras.layers.GlobalAveragePooling1D (),
+                            #tf.keras.layers.Bidirectional( tf.keras.layers.LSTM(64)),
+                            tf.keras.layers.BatchNormalization(),
+                            tf.keras.layers.Dense(24, activation = 'relu'),
                             tf.keras.layers.Dense(1, activation = 'sigmoid'),
 
     ]);
